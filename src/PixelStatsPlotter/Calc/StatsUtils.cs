@@ -3,7 +3,7 @@ using PixelStatsPlotter.Enums;
 
 namespace PixelStatsPlotter.Calc;
 
-/// <summary> 图像统计工具 </summary>
+/// <summary> 像素值统计工具 </summary>
 internal static class StatsUtils
 {
     /// <summary> 获取图像的指定通道 </summary>
