@@ -11,7 +11,6 @@ internal static class StatsUtils
     /// <param name="tgtCh"> 目标通道 </param>
     /// <param name="chCnt"> 源图通道数，避免重复访问 </param>
     /// <returns> 新Mat，仅含目标通道 </returns>
-    /// <exception cref="ArgumentException"> 目标通道与源图通道数冲突 </exception>
     /// <remarks> 需提前获取源图通道数并处理非4通道图的A通道 </remarks>
     public static Mat GetCh(this Mat src, ImgCh tgtCh, int chCnt)
         => (tgtCh, chCnt) switch {
@@ -28,7 +27,6 @@ internal static class StatsUtils
     /// <param name="val"> 原始值 </param>
     /// <param name="depth"> 位深度常量 </param>
     /// <returns> 归一化后的值 </returns>
-    /// <exception cref="ArgumentException"> 位深度常量无效 </exception>
     public static double Norm01(this double val, int depth)
         => depth switch {
             MatType.CV_8U => val / byte.MaxValue,
@@ -45,10 +43,8 @@ internal static class StatsUtils
     /// <param name="val"> 原始标准差 </param>
     /// <param name="depth"> 位深度常量 </param>
     /// <returns> 归一化后的标准差 </returns>
-    /// <exception cref="ArgumentException"> 位深度常量无效 </exception>
-    /// <remarks> 标准差的范围为0-极差的一半 </remarks>
     public static double Norm01StdDev(this double val, int depth)
-        => depth switch {
+        => depth switch { // 标准差的范围为0-极差的一半
             MatType.CV_8U or MatType.CV_8S => val / (0.5 * byte.MaxValue),
             MatType.CV_16U or MatType.CV_16S => val / (0.5 * ushort.MaxValue),
             MatType.CV_32S => val / (0.5 * uint.MaxValue),
