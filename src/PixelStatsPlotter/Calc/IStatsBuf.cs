@@ -1,7 +1,7 @@
-﻿namespace PixelStatsPlotter.Calculating;
+﻿namespace PixelStatsPlotter.Calc;
 
 /// <summary> 统计图像并暂存结果的接口 </summary>
-internal interface IStatsBuffer
+internal interface IStatsBuf
 {
     /// <summary> 统计单张图像并暂存结果 </summary>
     /// <param name="img"> 待测图像 </param>
