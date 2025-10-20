@@ -13,7 +13,7 @@ internal sealed class StdDevBuf(Enums.ImgCh tgtCh) : IStatsBuf
         var type = img.Type();
         if (tgtCh == Enums.ImgCh.A
             && type.Channels != 4)
-            _buf.Add(0); // 非4通道图的A值视为1，标准差为0
+            _buf.Add(0); // 非4通道图的A值视为1：标准差为0
         else {
             using Mat _ = new(), stdDevMat = new();
             using var tgtMat = img.GetCh(tgtCh, type.Channels);

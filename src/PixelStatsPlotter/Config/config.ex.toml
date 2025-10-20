@@ -7,13 +7,14 @@ input = "C:\\Images"
 # 排序依据："Name", "CreationTime", "LastAccessTime", "LastWriteTime", "Size"
 order = { key = "Name", asc = true }
 
-# 待测帧范围（无效或留空则测量全部）
+# 待测帧范围：无效或留空则测量全部
 range = { start = 0, count = 0 }
 
-# ROI坐标（无效或留空则测量全帧）
+# ROI坐标：无效或留空则测量全帧
 roi = { x = 0, y = 0, w = 0, h = 0 }
 
-# 统计项目（格式为"通道_统计量"，结果将绘制在同一图中)
+# 统计项目：格式为"通道_统计量"；每项输出为折线图的一条折线
 # 通道："R", "G", "B", "A"
+# 灰度图的RGB值均为其灰度值；非4通道图的A值视为1
 # 统计量："Max", "Mean", "Min", "StdDev"
 metrics = [ "R_Mean", "G_Mean", "B_Mean" ]

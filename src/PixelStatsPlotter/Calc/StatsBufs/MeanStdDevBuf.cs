@@ -16,7 +16,7 @@ internal sealed class MeanStdDevBuf(Enums.ImgCh tgtCh) : IStatsBuf
         var type = img.Type();
         if (tgtCh == Enums.ImgCh.A
             && type.Channels != 4) {
-            _meanBuf.Add(1); // 非4通道图的A值视为1，标准差为0
+            _meanBuf.Add(1); // 非4通道图的A值视为1：标准差为0
             _stdDevBuf.Add(0);
         } else {
             using Mat meanMat = new(), stdDevMat = new();

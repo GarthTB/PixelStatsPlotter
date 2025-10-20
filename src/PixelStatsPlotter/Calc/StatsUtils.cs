@@ -7,10 +7,10 @@ namespace PixelStatsPlotter.Calc;
 internal static class StatsUtils
 {
     /// <summary> 获取图像的指定通道 </summary>
-    /// <param name="src"> 源图，任意通道数 </param>
+    /// <param name="src"> 源图：任意通道数 </param>
     /// <param name="tgtCh"> 目标通道 </param>
-    /// <param name="chCnt"> 源图通道数，避免重复访问 </param>
-    /// <returns> 新Mat，仅含目标通道 </returns>
+    /// <param name="chCnt"> 源图通道数：避免重复访问 </param>
+    /// <returns> 新Mat：仅含目标通道 </returns>
     /// <remarks> 需提前获取源图通道数并处理非4通道图的A通道 </remarks>
     public static Mat GetCh(this Mat src, ImgCh tgtCh, int chCnt)
         => (tgtCh, chCnt) switch {
