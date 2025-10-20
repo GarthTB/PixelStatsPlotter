@@ -23,5 +23,5 @@ internal sealed class MeanBuf(Enums.ImgCh tgtCh) : IStatsBuf
     }
 
     public (string Name, double[] Values)[] Snapshot()
-        => [($"{tgtCh}_Mean", _buf.ToArray())];
+        => [($"{tgtCh}_Mean", [.. _buf])];
 }

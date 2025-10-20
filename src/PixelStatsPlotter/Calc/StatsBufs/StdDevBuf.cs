@@ -25,5 +25,5 @@ internal sealed class StdDevBuf(Enums.ImgCh tgtCh) : IStatsBuf
     }
 
     public (string Name, double[] Values)[] Snapshot()
-        => [($"{tgtCh}_StdDev", _buf.ToArray())];
+        => [($"{tgtCh}_StdDev", [.. _buf])];
 }

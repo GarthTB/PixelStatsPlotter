@@ -29,6 +29,6 @@ internal sealed class MinMaxBuf(Enums.ImgCh tgtCh) : IStatsBuf
     }
 
     public (string Name, double[] Values)[] Snapshot()
-        => [($"{tgtCh}_Min", _minBuf.ToArray()),
-            ($"{tgtCh}_Max", _maxBuf.ToArray())];
+        => [($"{tgtCh}_Min", [.. _minBuf]),
+            ($"{tgtCh}_Max", [.. _maxBuf])];
 }

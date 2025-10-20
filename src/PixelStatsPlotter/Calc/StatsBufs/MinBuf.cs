@@ -23,5 +23,5 @@ internal sealed class MinBuf(Enums.ImgCh tgtCh) : IStatsBuf
     }
 
     public (string Name, double[] Values)[] Snapshot()
-        => [($"{tgtCh}_Min", _buf.ToArray())];
+        => [($"{tgtCh}_Min", [.. _buf])];
 }
