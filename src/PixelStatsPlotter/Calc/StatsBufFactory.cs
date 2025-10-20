@@ -11,25 +11,27 @@ internal static class StatsBufFactory
     /// <returns> 已初始化的缓冲区实例数组 </returns>
     /// <remarks> 每个通道的所有统计量需提前用位运算合并 </remarks>
     public static IStatsBuf[] Create((ImgCh TgtCh, Stat Stats)[] statsPerCh)
-        => [.. statsPerCh.SelectMany(tup => {
-            List<IStatsBuf> bufs = new(3); // 每通道最多3个buf
-            var (ch, stats) = tup;
-            if (stats.HasFlag(Stat.MeanStdDev)) {
-                bufs.Add(new MeanStdDevBuf(ch));
-                stats &= ~Stat.MeanStdDev;
-            }
-            if (stats.HasFlag(Stat.MinMax)) {
-                bufs.Add(new MinMaxBuf(ch));
-                stats &= ~Stat.MinMax;
-            }
-            if (stats.HasFlag(Stat.Max))
-                bufs.Add(new MaxBuf(ch));
-            if (stats.HasFlag(Stat.Mean))
-                bufs.Add(new MeanBuf(ch));
-            if (stats.HasFlag(Stat.Min))
-                bufs.Add(new MinBuf(ch));
-            if (stats.HasFlag(Stat.StdDev))
-                bufs.Add(new StdDevBuf(ch));
-            return bufs;
-        })];
+        => [.. statsPerCh.Aggregate(
+            new List<IStatsBuf>(),
+            static (bufs, tup) => {
+                var (tgtCh, stats) = tup;
+
+                if (stats.HasFlag(Stat.MeanStdDev)) {
+                    bufs.Add(new MeanStdDevBuf(tgtCh));
+                    stats &= ~Stat.MeanStdDev;
+                } else if (stats.HasFlag(Stat.Mean))
+                    bufs.Add(new MeanBuf(tgtCh));
+                else if (stats.HasFlag(Stat.StdDev))
+                    bufs.Add(new StdDevBuf(tgtCh));
+
+                if (stats.HasFlag(Stat.MinMax)) {
+                    bufs.Add(new MinMaxBuf(tgtCh));
+                    stats &= ~Stat.MinMax;
+                } else if (stats.HasFlag(Stat.Max))
+                    bufs.Add(new MaxBuf(tgtCh));
+                else if (stats.HasFlag(Stat.Min))
+                    bufs.Add(new MinBuf(tgtCh));
+
+                return bufs;
+            })];
 }
