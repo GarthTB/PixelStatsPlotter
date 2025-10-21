@@ -14,7 +14,7 @@ internal static class StatsBufFactory
             from metric in metrics
             group metric by metric.TgtCh into g
             select (g.Key,
-                    g.Select(static x => x.Stat)
+                    g.Select(static metric => metric.Stat)
                      .Aggregate(static (a, b) => a | b));
 
         List<IStatsBuf> bufs = [];

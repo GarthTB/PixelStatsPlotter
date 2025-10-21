@@ -6,11 +6,8 @@ namespace PixelStatsPlotter.Calc.StatsBufs;
 /// <param name="tgtCh"> 目标通道 </param>
 internal sealed class MinMaxBuf(Enums.ImgCh tgtCh) : IStatsBuf
 {
-    /// <summary> 最小值序列 </summary>
-    private readonly List<double> _minBuf = [];
-
-    /// <summary> 最大值序列 </summary>
-    private readonly List<double> _maxBuf = [];
+    /// <summary> 结果序列 </summary>
+    private readonly List<double> _minBuf = [], _maxBuf = [];
 
     public void Collect(Mat img) {
         var type = img.Type();

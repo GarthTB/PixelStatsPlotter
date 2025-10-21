@@ -6,11 +6,8 @@ namespace PixelStatsPlotter.Calc.StatsBufs;
 /// <param name="tgtCh"> 目标通道 </param>
 internal sealed class MeanStdDevBuf(Enums.ImgCh tgtCh) : IStatsBuf
 {
-    /// <summary> 均值序列 </summary>
-    private readonly List<double> _meanBuf = [];
-
-    /// <summary> 标准差序列 </summary>
-    private readonly List<double> _stdDevBuf = [];
+    /// <summary> 结果序列 </summary>
+    private readonly List<double> _meanBuf = [], _stdDevBuf = [];
 
     public void Collect(Mat img) {
         var type = img.Type();
