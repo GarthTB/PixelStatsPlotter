@@ -5,10 +5,10 @@ namespace PixelStatsPlotter.Proc;
 /// <summary> 视频处理器 </summary>
 internal static class VideoProc
 {
-    public static (string Name, double[] Values)[] Run(Config.ConfigModel config) {
-        var file = config.Paths.FirstOrDefault()
+    public static (string Name, double[] Values)[] Run(Config.ProcConfig cfg) {
+        var file = cfg.Paths.FirstOrDefault()
             ?? throw new ArgumentException(
-                "未指定视频文件路径", nameof(config));
+                "未指定视频文件路径", nameof(cfg));
         using VideoCapture capture = new(file);
         if (!capture.IsOpened())
             throw new InvalidOperationException(
@@ -16,7 +16,7 @@ internal static class VideoProc
 
         Console.WriteLine("开始处理视频...");
         using (Mat frame = new())
-            if (config.Range is ( >= 0, > 0) range) {
+            if (cfg.Range is ( >= 0, > 0) range) {
                 if (!capture.Set(VideoCaptureProperties.PosFrames, range.Start))
                     throw new InvalidOperationException(
                         $"无法设置起始帧号 `{range.Start}`");
@@ -32,11 +32,11 @@ internal static class VideoProc
                     CollectFrame(frame);
         Console.WriteLine("处理完成！");
 
-        return [.. config.StatsBufs.SelectMany(static buf => buf.Snapshot())];
+        return [.. cfg.StatsBufs.SelectMany(static buf => buf.Snapshot())];
 
         void CollectFrame(Mat frame) {
-            using var roi = config.GetRoi(frame);
-            foreach (var buf in config.StatsBufs)
+            using var roi = cfg.GetRoi(frame);
+            foreach (var buf in cfg.StatsBufs)
                 buf.Collect(roi);
         }
     }

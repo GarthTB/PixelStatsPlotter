@@ -4,19 +4,19 @@ using PixelStatsPlotter.Enums;
 
 namespace PixelStatsPlotter.Config;
 
-/// <summary> 由TomlModel验证并整理得到的配置 </summary>
+/// <summary> 由TomlModel提取并验证的处理配置 </summary>
 /// <param name="Paths"> 图像序列路径或视频文件路径 </param>
 /// <param name="Range"> 待测帧范围：无效则测量全部 </param>
 /// <param name="GetRoi"> ROI的提取方法 </param>
 /// <param name="StatsBufs"> 统计所需的所有IStatsBuf </param>
-internal sealed record ConfigModel(
+internal sealed record ProcConfig(
     string[] Paths,
     (int Start, int Count) Range,
     Func<Mat, Mat> GetRoi,
     IStatsBuf[] StatsBufs)
 {
     /// <summary> 从TomlModel构造ConfigModel </summary>
-    public static ConfigModel FromToml(TomlModel toml) {
+    public static ProcConfig FromToml(TomlModel toml) {
         var paths = toml.Input switch {
             var dir when Directory.Exists(dir)
                 && Directory.GetFiles(dir) is { Length: > 0 } files
