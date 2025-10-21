@@ -9,14 +9,14 @@ namespace PixelStatsPlotter.Config;
 /// <param name="Range"> 待测帧范围：无效则测量全部 </param>
 /// <param name="GetRoi"> ROI的提取方法 </param>
 /// <param name="StatsBufs"> 统计所需的所有IStatsBuf </param>
-internal sealed record ProcConfig(
+internal sealed record ProcCfg(
     string[] Paths,
     (int Start, int Count) Range,
     Func<Mat, Mat> GetRoi,
     IStatsBuf[] StatsBufs)
 {
-    /// <summary> 从TomlModel构造ConfigModel </summary>
-    public static ProcConfig FromToml(TomlModel toml) {
+    /// <summary> 从TomlModel提取并验证处理配置 </summary>
+    public static ProcCfg FromToml(TomlModel toml) {
         var paths = toml.Input switch {
             var dir when Directory.Exists(dir)
                 && Directory.GetFiles(dir) is { Length: > 0 } files

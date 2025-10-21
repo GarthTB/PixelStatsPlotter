@@ -5,7 +5,7 @@ namespace PixelStatsPlotter.Proc;
 /// <summary> 图像序列处理器 </summary>
 internal static class ImageProc
 {
-    public static (string Name, double[] Values)[] Run(Config.ProcConfig cfg) {
+    public static (string Name, double[] Values)[] Run(Config.ProcCfg cfg) {
         var (start, count) = cfg.Range;
         var pathsSpan = start >= 0
             && count > 0

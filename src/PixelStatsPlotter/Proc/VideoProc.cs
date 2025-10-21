@@ -5,14 +5,11 @@ namespace PixelStatsPlotter.Proc;
 /// <summary> 视频处理器 </summary>
 internal static class VideoProc
 {
-    public static (string Name, double[] Values)[] Run(Config.ProcConfig cfg) {
-        var file = cfg.Paths.FirstOrDefault()
-            ?? throw new ArgumentException(
-                "未指定视频文件路径", nameof(cfg));
-        using VideoCapture capture = new(file);
+    public static (string Name, double[] Values)[] Run(Config.ProcCfg cfg) {
+        using VideoCapture capture = new(cfg.Paths[0]); // ProcCfg保证非空
         if (!capture.IsOpened())
             throw new InvalidOperationException(
-                $"无法打开视频文件 `{file}`");
+                $"无法打开视频文件 `{cfg.Paths[0]}`");
 
         Console.WriteLine("开始处理视频...");
         using (Mat frame = new())
