@@ -20,7 +20,7 @@ internal static class StatsUtils
             (ImgCh.B, 3 or 4) => src.ExtractChannel(0),
             (ImgCh.A, 4) => src.ExtractChannel(3),
             _ => throw new ArgumentException(
-                $"无法获取{chCnt}通道图的{tgtCh}通道", nameof(tgtCh))
+                $"无法获取 `{chCnt}` 通道图的 `{tgtCh}` 通道", nameof(tgtCh))
         };
 
     /// <summary> 依据位深度常量，归一化值到0-1范围 </summary>
@@ -34,7 +34,7 @@ internal static class StatsUtils
             MatType.CV_32S => (val - int.MinValue) / uint.MaxValue,
             MatType.CV_32F or MatType.CV_64F => val,
             _ => throw new ArgumentException(
-                $"位深度常量{depth}无效", nameof(depth))
+                $"位深度常量 `{depth}` 无效", nameof(depth))
         };
 
     /// <summary> 依据位深度常量，归一化标准差到0-1范围 </summary>
@@ -46,6 +46,6 @@ internal static class StatsUtils
             MatType.CV_32S => val / (0.5 * uint.MaxValue),
             MatType.CV_32F or MatType.CV_64F => val,
             _ => throw new ArgumentException(
-                $"位深度常量{depth}无效", nameof(depth))
+                $"位深度常量 `{depth}` 无效", nameof(depth))
         };
 }

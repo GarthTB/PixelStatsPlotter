@@ -18,11 +18,12 @@ internal sealed record ConfigModel(
     /// <summary> 从TomlModel构造ConfigModel </summary>
     public static ConfigModel FromToml(TomlModel toml) {
         var paths = toml.Input switch {
-            var file when File.Exists(file) => [file],
             var dir when Directory.Exists(dir)
                 && Directory.GetFiles(dir) is { Length: > 0 } files
                 => OrderFiles(files, toml.Order.Key, toml.Order.Asc),
-            _ => throw new("输入路径无效")
+            var file when File.Exists(file) => [file],
+            var s => throw new ArgumentException(
+                $"输入路径 `{s}` 无效", nameof(toml))
         };
         var (start, count) = toml.Range; // 用时再结合实际长度检查
 
@@ -35,21 +36,24 @@ internal sealed record ConfigModel(
             && Enum.TryParse(parts[0], true, out ImgCh tgtCh)
             && Enum.TryParse(parts[1], true, out Stat stat)
             ? (tgtCh, stat)
-            : throw new($"统计项目 `{metric}` 无效"));
+            : throw new ArgumentException(
+                $"统计项目 `{metric}` 无效", nameof(toml)));
         var bufs = StatsBufFactory.CreateFromMetrics(metrics);
 
         return new(paths, (start, count), getRoi, [.. bufs]);
 
         static string[] OrderFiles(string[] files, string key, bool asc) {
             if (!Enum.TryParse(key, true, out OrdKey ordKey))
-                throw new($"图像排序依据 `{key}` 无效");
+                throw new ArgumentException(
+                    $"图像排序依据 `{key}` 无效", nameof(key));
             Func<FileInfo, object> keySelector = ordKey switch {
                 OrdKey.Name => static fi => fi.Name,
                 OrdKey.CreationTime => static fi => fi.CreationTime,
                 OrdKey.LastAccessTime => static fi => fi.LastAccessTime,
                 OrdKey.LastWriteTime => static fi => fi.LastWriteTime,
                 OrdKey.Size => static fi => fi.Length,
-                _ => throw new($"图像排序依据 `{key}` 无效")
+                _ => throw new ArgumentException(
+                    $"图像排序依据 `{key}` 无效", nameof(key))
             };
             var fileInfos = files.Select(static f => new FileInfo(f));
             var sorted = asc
