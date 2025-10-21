@@ -46,7 +46,7 @@ internal sealed record ConfigModel(
             if (!Enum.TryParse(key, true, out OrdKey ordKey))
                 throw new ArgumentException(
                     $"图像排序依据 `{key}` 无效", nameof(key));
-            Func<FileInfo, object> keySelector = ordKey switch {
+            Func<FileInfo, object> selector = ordKey switch {
                 OrdKey.Name => static fi => fi.Name,
                 OrdKey.CreationTime => static fi => fi.CreationTime,
                 OrdKey.LastAccessTime => static fi => fi.LastAccessTime,
@@ -55,11 +55,11 @@ internal sealed record ConfigModel(
                 _ => throw new ArgumentException(
                     $"图像排序依据 `{key}` 无效", nameof(key))
             };
-            var fileInfos = files.Select(static f => new FileInfo(f));
-            var sorted = asc
-                ? fileInfos.OrderBy(keySelector)
-                : fileInfos.OrderByDescending(keySelector);
-            return [.. sorted.Select(static f => f.FullName)];
+            var fis = files.Select(static f => new FileInfo(f));
+            var ordered = asc
+                ? fis.OrderBy(selector)
+                : fis.OrderByDescending(selector);
+            return [.. ordered.Select(static f => f.FullName)];
         }
     }
 
