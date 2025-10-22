@@ -1,3 +1,4 @@
 <Solution>
+  <Project Path="benchmarks/Benchmarks/Benchmarks.csproj"/>
   <Project Path="src/PixelStatsPlotter/PixelStatsPlotter.csproj"/>
 </Solution>
