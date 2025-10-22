@@ -1,2 +1,2 @@
-* text=auto encoding=UTF-8
-*.cs text eol=lf diff=csharp linguist-language=C#
+* text=auto encoding=UTF-8 eol=lf
+*.cs text diff=csharp linguist-language=C#

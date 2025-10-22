@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="BenchmarkDotNet" Version="0.15.4" />
+    <PackageReference Include="OpenCvSharp4.Windows" Version="4.11.0.20250507" />
   </ItemGroup>
 
 </Project>
