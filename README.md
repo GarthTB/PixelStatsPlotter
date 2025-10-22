@@ -11,22 +11,24 @@
 ## ✨ 功能特点
 
 - 🚀 **高效**：4K视频处理速度超30FPS
-- ⚙ **自动**：通过TOML文件配置所有参数，无需交互
+- ⚙ **自动**：通过TOML文件配置所有参数，无交互
 - 🔀 **灵活**：支持多种图像/视频格式、位深、通道数
 - 🎯 **精确**：支持隔离通道、指定ROI
 - 📊 **直观**：所有指标输出为单张折线图
-- 📦 **易用**：通过压缩包发布，解压即可运行
+- 📦 **易用**：通过压缩包发布，无需依赖，解压即用
 
 ## 📥 安装与使用
 
 ### 系统要求
 
 - 操作系统：Windows 10 或更高版本
-- 运行依赖：[.NET 10.0 运行时](https://dotnet.microsoft.com/zh-cn/download/dotnet/10.0)
+- 架构：x64
+
+> **注意：原生AOT发布，无需安装.NET运行时**
 
 ### 使用步骤
 
-1. 下载 [最新版本压缩包](https://github.com/GarthTB/PixelStatsPlotter/releases/latest) 并解压
+1. 下载 [最新版本包](https://github.com/GarthTB/PixelStatsPlotter/releases/latest) 并解压
 2. 按需修改目录下的 `cfg.demo.toml` ，然后重命名为 `cfg.toml`
 3. 运行程序 `PixelStatsPlotter.exe`
     - 推荐方式：在控制台中运行，以查看输出日志
