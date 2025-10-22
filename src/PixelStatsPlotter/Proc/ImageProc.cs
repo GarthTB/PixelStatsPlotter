@@ -13,8 +13,10 @@ internal static class ImageProc
             ? cfg.Paths.AsSpan(start, count)
             : cfg.Paths.AsSpan(); // 无效则测量全部
 
-        Console.WriteLine($"共 {pathsSpan.Length} 张图像。开始处理...");
+        int cur = 0, total = pathsSpan.Length;
+        Console.WriteLine($"共 {total} 张图像。开始处理...");
         foreach (var path in pathsSpan) {
+            Console.Write($"\r开始处理第 {++cur}/{total} 张：{path.Name}");
             using Mat img = new(path.FullName, ImreadModes.Unchanged);
             using var roi = cfg.GetRoi(img);
             foreach (var buf in cfg.StatsBufs)
