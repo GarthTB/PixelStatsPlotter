@@ -12,22 +12,32 @@ internal static class VideoProc
             throw new InvalidOperationException(
                 $"无法打开视频文件 `{path}`");
 
-        Console.WriteLine("开始处理视频...");
-        using (Mat frame = new())
-            if (cfg.Range is ( >= 0, > 0) range) {
-                if (!capture.Set(VideoCaptureProperties.PosFrames, range.Start))
-                    throw new InvalidOperationException(
-                        $"无法设置起始帧号 `{range.Start}`");
-                for (var cnt = 0; cnt < range.Count; cnt++)
-                    if (capture.Read(frame))
-                        CollectFrame(frame);
-                    else {
-                        Console.WriteLine($"第 {cnt}/{range.Count} 帧超出结尾。");
-                        break;
-                    }
-            } else
-                while (capture.Read(frame))
+        Console.WriteLine("处理视频...");
+        int cnt = 0, total = cfg.Range.Count, start = cfg.Range.Start;
+        if (start >= 0 && total > 0) {
+            if (!capture.Set(VideoCaptureProperties.PosFrames, start))
+                throw new InvalidOperationException(
+                    $"无法设置起始帧号 `{start}`");
+            while (cnt < total) {
+                Console.WriteLine($"开始处理第 {++cnt}/{total} 帧...");
+                using Mat frame = new();
+                if (capture.Read(frame))
                     CollectFrame(frame);
+                else {
+                    Console.WriteLine($"提前结束，只有 {cnt - 1} 帧。");
+                    break;
+                }
+            }
+        } else while (true) {
+                Console.WriteLine($"开始处理第 {++cnt} 帧...");
+                using Mat frame = new();
+                if (capture.Read(frame))
+                    CollectFrame(frame);
+                else {
+                    Console.WriteLine($"视频结束，共 {cnt - 1} 帧。");
+                    break;
+                }
+            }
         Console.WriteLine("处理完成！");
 
         return [.. cfg.StatsBufs.SelectMany(static buf => buf.Snapshot())];
