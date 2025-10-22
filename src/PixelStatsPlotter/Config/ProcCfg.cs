@@ -10,7 +10,7 @@ namespace PixelStatsPlotter.Config;
 /// <param name="GetRoi"> ROI的提取方法 </param>
 /// <param name="StatsBufs"> 统计所需的所有IStatsBuf </param>
 internal sealed record ProcCfg(
-    string[] Paths,
+    FileInfo[] Paths,
     (int Start, int Count) Range,
     Func<Mat, Mat> GetRoi,
     IStatsBuf[] StatsBufs)
@@ -21,7 +21,7 @@ internal sealed record ProcCfg(
             var dir when Directory.Exists(dir)
                 && Directory.GetFiles(dir) is { Length: > 0 } files
                 => OrderFiles(files, toml.Order.Key, toml.Order.Asc),
-            var file when File.Exists(file) => [file],
+            var file when File.Exists(file) => [new FileInfo(file)],
             var s => throw new ArgumentException(
                 $"输入路径 `{s}` 无效", nameof(toml))
         };
@@ -42,15 +42,15 @@ internal sealed record ProcCfg(
 
         return new(paths, (start, count), getRoi, [.. bufs]);
 
-        static string[] OrderFiles(string[] files, string key, bool asc) {
+        static FileInfo[] OrderFiles(string[] files, string key, bool asc) {
             if (!Enum.TryParse(key, true, out OrdKey ordKey))
                 throw new ArgumentException(
                     $"图像排序依据 `{key}` 无效", nameof(key));
             Func<FileInfo, object> selector = ordKey switch {
                 OrdKey.Name => static fi => fi.Name,
-                OrdKey.CreationTime => static fi => fi.CreationTime,
-                OrdKey.LastAccessTime => static fi => fi.LastAccessTime,
-                OrdKey.LastWriteTime => static fi => fi.LastWriteTime,
+                OrdKey.CreationTime => static fi => fi.CreationTimeUtc,
+                OrdKey.LastAccessTime => static fi => fi.LastAccessTimeUtc,
+                OrdKey.LastWriteTime => static fi => fi.LastWriteTimeUtc,
                 OrdKey.Size => static fi => fi.Length,
                 _ => throw new ArgumentException(
                     $"图像排序依据 `{key}` 无效", nameof(key))
@@ -59,7 +59,7 @@ internal sealed record ProcCfg(
             var ordered = asc
                 ? fis.OrderBy(selector)
                 : fis.OrderByDescending(selector);
-            return [.. ordered.Select(static f => f.FullName)];
+            return [.. ordered];
         }
     }
 

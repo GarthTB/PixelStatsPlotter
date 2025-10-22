@@ -6,10 +6,11 @@ namespace PixelStatsPlotter.Proc;
 internal static class VideoProc
 {
     public static (string Name, double[] Values)[] Run(Config.ProcCfg cfg) {
-        using VideoCapture capture = new(cfg.Paths[0]); // ProcCfg保证非空
+        var path = cfg.Paths[0].FullName; // ProcCfg保证非空
+        using VideoCapture capture = new(path);
         if (!capture.IsOpened())
             throw new InvalidOperationException(
-                $"无法打开视频文件 `{cfg.Paths[0]}`");
+                $"无法打开视频文件 `{path}`");
 
         Console.WriteLine("开始处理视频...");
         using (Mat frame = new())

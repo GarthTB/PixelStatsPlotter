@@ -15,7 +15,7 @@ internal static class ImageProc
 
         Console.WriteLine($"共 {pathsSpan.Length} 张图像。开始处理...");
         foreach (var path in pathsSpan) {
-            using Mat img = new(path, ImreadModes.Unchanged);
+            using Mat img = new(path.FullName, ImreadModes.Unchanged);
             using var roi = cfg.GetRoi(img);
             foreach (var buf in cfg.StatsBufs)
                 buf.Collect(roi);
