@@ -1,4 +1,7 @@
 <Solution>
+  <Folder Name="/README/">
+    <File Path="README.md"/>
+  </Folder>
   <Project Path="benchmarks/Benchmarks/Benchmarks.csproj"/>
   <Project Path="src/PixelStatsPlotter/PixelStatsPlotter.csproj"/>
 </Solution>
