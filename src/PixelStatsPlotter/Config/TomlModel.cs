@@ -6,7 +6,7 @@
 /// <param name="Range"> 待测帧范围：无效则测量全部 </param>
 /// <param name="Roi"> ROI坐标：无效则测量全帧 </param>
 /// <param name="Metrics"> 统计项目："通道_统计量"数组 </param>
-/// <param name="Size"> 输出图像尺寸：无效则FHD </param>
+/// <param name="Size"> 输出图像尺寸：无效则HD </param>
 internal sealed record TomlModel(
     string Input,
     TomlModel.OrderTable Order,
@@ -27,5 +27,5 @@ internal sealed record TomlModel(
     { public RoiTable() : this(0, 0, 0, 0) { } }
 
     internal sealed record SizeTable(int W, int H)
-    { public SizeTable() : this(1920, 1080) { } }
+    { public SizeTable() : this(1280, 720) { } }
 }

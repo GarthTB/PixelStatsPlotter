@@ -19,5 +19,5 @@ roi = { x = 0, y = 0, w = 0, h = 0 }
 # 统计量："Max", "Mean", "Min", "StdDev"
 metrics = [ "R_Mean", "G_Mean", "B_Mean" ]
 
-# 输出图像尺寸：无效或留空则FHD
-size = { w = 1920, h = 1080 }
+# 输出图像尺寸：无效或留空则HD
+size = { w = 1280, h = 720 }
