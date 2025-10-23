@@ -9,6 +9,8 @@
     <AssemblyTitle>Pixel Stats Plotter</AssemblyTitle>
     <RootNamespace>PixelStatsPlotter</RootNamespace>
     <ApplicationIcon>..\..\assets\favicon.ico</ApplicationIcon>
+    <PublishTrimmed>True</PublishTrimmed>
+    <PublishAot>True</PublishAot>
     <Title>Pixel Stats Plotter</Title>
     <Version>1.0.0</Version>
     <Authors>GarthTB | 天卜</Authors>
