@@ -2,7 +2,7 @@ using OpenCvSharp;
 
 namespace PixelStatsPlotter.Calc.StatsBufs;
 
-/// <summary> 像素均值缓冲区 </summary>
+/// <summary> 像素均值统计缓冲区 </summary>
 /// <param name="tgtCh"> 目标通道 </param>
 internal sealed class MeanBuf(Enums.ImgCh tgtCh): IStatsBuf
 {
@@ -22,6 +22,6 @@ internal sealed class MeanBuf(Enums.ImgCh tgtCh): IStatsBuf
         }
     }
 
-    public (string Name, double[] Values)[] Snapshot()
-        => [($"{tgtCh}_Mean", [.. _buf])];
+    public StatResult[] Snapshot()
+        => [new($"{tgtCh}_Mean", [.. _buf])];
 }

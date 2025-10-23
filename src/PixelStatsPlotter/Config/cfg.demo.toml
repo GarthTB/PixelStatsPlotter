@@ -1,23 +1,23 @@
 # 示例配置：按需修改，然后保存为程序目录下的`cfg.toml`，作为输入参数
 
 # 图像序列所在目录或视频文件路径
-input = "C:\\Images"
+input = "Images"
 
 # 图像顺序（视频始终按时序）
 # 排序依据："Name", "CreationTime", "LastAccessTime", "LastWriteTime", "Size"
 order = { key = "Name", asc = true }
 
-# 待测帧范围：无效或留空则测量全部
+# 待测帧范围：无效或留空则统计全部
 range = { start = 0, count = 0 }
 
-# ROI坐标：无效或留空则测量全帧
+# ROI坐标：无效或留空则统计全帧
 roi = { x = 0, y = 0, w = 0, h = 0 }
 
-# 统计项目：格式为"通道_统计量"；每项输出为折线图的一条折线
+# 统计项目："通道_统计量"数组；每项输出为折线图的一条折线
 # 通道："R", "G", "B", "A"
 # 灰度图的RGB值均为其灰度值；非4通道图的A值视为1
 # 统计量："Max", "Mean", "Min", "StdDev"
-metrics = [ "R_Mean", "G_Mean", "B_Mean" ]
+stats = [ "R_Mean", "G_Mean", "B_Mean" ]
 
 # 输出图像尺寸：无效或留空则HD
 size = { w = 1280, h = 720 }

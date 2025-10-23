@@ -5,8 +5,8 @@ namespace PixelStatsPlotter.Proc;
 /// <summary> 视频处理器 </summary>
 internal static class VideoProc
 {
-    public static (string Name, double[] Values)[] Run(Config.ProcCfg cfg) {
-        var path = cfg.Paths[0].FullName; // ProcCfg保证非空
+    public static Calc.StatResult[] Run(Config.ProcCfg cfg) {
+        var path = cfg.Files[0].FullName; // ProcCfg保证非空
         using VideoCapture capture = new(path);
         if (!capture.IsOpened())
             throw new InvalidOperationException(
@@ -19,22 +19,22 @@ internal static class VideoProc
                 throw new InvalidOperationException(
                     $"无法设置起始帧号 `{start}`");
             while (cnt < total) {
-                Console.WriteLine($"开始处理第 {++cnt}/{total} 帧...");
+                Console.WriteLine($"开始第 {++cnt}/{total} 帧...");
                 using Mat frame = new();
                 if (capture.Read(frame))
                     CollectFrame(frame);
                 else {
-                    Console.WriteLine($"提前结束，只有 {cnt - 1} 帧。");
+                    Console.WriteLine($"已到结尾，只有 {cnt - 1} 帧。");
                     break;
                 }
             }
         } else while (true) {
-                Console.WriteLine($"开始处理第 {++cnt} 帧...");
+                Console.WriteLine($"开始第 {++cnt} 帧...");
                 using Mat frame = new();
                 if (capture.Read(frame))
                     CollectFrame(frame);
                 else {
-                    Console.WriteLine($"视频结束，共 {cnt - 1} 帧。");
+                    Console.WriteLine($"已到结尾，共 {cnt - 1} 帧。");
                     break;
                 }
             }

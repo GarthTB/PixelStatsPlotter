@@ -2,7 +2,7 @@ using OpenCvSharp;
 
 namespace PixelStatsPlotter.Calc.StatsBufs;
 
-/// <summary> 像素标准差缓冲区 </summary>
+/// <summary> 像素标准差统计缓冲区 </summary>
 /// <param name="tgtCh"> 目标通道 </param>
 internal sealed class StdDevBuf(Enums.ImgCh tgtCh): IStatsBuf
 {
@@ -24,6 +24,6 @@ internal sealed class StdDevBuf(Enums.ImgCh tgtCh): IStatsBuf
         }
     }
 
-    public (string Name, double[] Values)[] Snapshot()
-        => [($"{tgtCh}_StdDev", [.. _buf])];
+    public StatResult[] Snapshot()
+        => [new($"{tgtCh}_StdDev", [.. _buf])];
 }

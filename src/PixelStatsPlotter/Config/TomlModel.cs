@@ -1,18 +1,18 @@
 namespace PixelStatsPlotter.Config;
 
-/// <summary> 用于Tomlyn解析TOML文件的原始数据模型 </summary>
+/// <summary> 用于Tomlyn解析的原始TOML模型 </summary>
 /// <param name="Input"> 图像序列所在目录或视频文件路径 </param>
 /// <param name="Order"> 图像顺序（视频始终按时序） </param>
-/// <param name="Range"> 待测帧范围：无效则测量全部 </param>
-/// <param name="Roi"> ROI坐标：无效则测量全帧 </param>
-/// <param name="Metrics"> 统计项目："通道_统计量"数组 </param>
+/// <param name="Range"> 待测帧范围：无效则统计全部 </param>
+/// <param name="Roi"> ROI坐标：无效则统计全帧 </param>
+/// <param name="Stats"> 统计项目："通道_统计量"数组 </param>
 /// <param name="Size"> 输出图像尺寸：无效则HD </param>
 internal sealed record TomlModel(
     string Input,
     TomlModel.OrderTable Order,
     TomlModel.RangeTable Range,
     TomlModel.RoiTable Roi,
-    string[] Metrics,
+    string[] Stats,
     TomlModel.SizeTable Size)
 {
     public TomlModel() : this("", new(), new(), new(), [], new()) { }

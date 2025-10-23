@@ -5,22 +5,22 @@ using PixelStatsPlotter.Enums;
 namespace PixelStatsPlotter.Config;
 
 /// <summary> 由TomlModel提取并验证的处理配置 </summary>
-/// <param name="Paths"> 图像序列路径或视频文件路径 </param>
-/// <param name="Range"> 待测帧范围：无效则测量全部 </param>
+/// <param name="Files"> 图像序列或视频文件信息 </param>
+/// <param name="Range"> 待测帧范围：无效则统计全部 </param>
 /// <param name="GetRoi"> ROI的提取方法 </param>
-/// <param name="StatsBufs"> 统计所需的所有IStatsBuf </param>
+/// <param name="StatsBufs"> 所需的所有统计缓冲区 </param>
 internal sealed record ProcCfg(
-    FileInfo[] Paths,
+    FileInfo[] Files,
     (int Start, int Count) Range,
     Func<Mat, Mat> GetRoi,
     IStatsBuf[] StatsBufs)
 {
     /// <summary> 从TomlModel提取并验证处理配置 </summary>
     public static ProcCfg FromToml(TomlModel toml) {
-        var paths = toml.Input switch {
+        var files = toml.Input switch {
             var dir when Directory.Exists(dir)
-                && Directory.GetFiles(dir) is { Length: > 0 } files
-                => OrderFiles(files, toml.Order.Key, toml.Order.Asc),
+                && Directory.GetFiles(dir) is { Length: > 0 } paths
+                => OrderFiles(paths, toml.Order.Key, toml.Order.Asc),
             var file when File.Exists(file) => [new FileInfo(file)],
             var s => throw new ArgumentException(
                 $"输入路径 `{s}` 无效", nameof(toml))
@@ -29,20 +29,20 @@ internal sealed record ProcCfg(
 
         Func<Mat, Mat> getRoi = toml.Roi is ( >= 0, >= 0, > 0, > 0) roi
             ? mat => new(mat, new Rect(roi.X, roi.Y, roi.W, roi.H))
-            : static mat => mat; // 无效则测量全帧
+            : static mat => mat; // 无效则统计全帧
 
-        var metrics = toml.Metrics.Select(static metric
-            => metric.Split('_') is { Length: 2 } parts
+        var stats = toml.Stats.Select(static s
+            => s.Split('_') is { Length: 2 } parts
             && Enum.TryParse(parts[0], true, out ImgCh tgtCh)
             && Enum.TryParse(parts[1], true, out Stat stat)
             ? (tgtCh, stat)
             : throw new ArgumentException(
-                $"统计项目 `{metric}` 无效", nameof(toml)));
-        var bufs = StatsBufFactory.CreateFromMetrics(metrics);
+                $"统计项目 `{s}` 无效", nameof(toml)));
+        var bufs = StatsBufFactory.CreateFromStats(stats);
 
-        return new(paths, (start, count), getRoi, [.. bufs]);
+        return new(files, (start, count), getRoi, [.. bufs]);
 
-        static FileInfo[] OrderFiles(string[] files, string key, bool asc) {
+        static FileInfo[] OrderFiles(string[] paths, string key, bool asc) {
             if (!Enum.TryParse(key, true, out OrdKey ordKey))
                 throw new ArgumentException(
                     $"图像排序依据 `{key}` 无效", nameof(key));
@@ -55,10 +55,10 @@ internal sealed record ProcCfg(
                 _ => throw new ArgumentException(
                     $"图像排序依据 `{key}` 无效", nameof(key))
             };
-            var fis = files.Select(static f => new FileInfo(f));
+            var infos = paths.Select(static f => new FileInfo(f));
             var ordered = asc
-                ? fis.OrderBy(selector)
-                : fis.OrderByDescending(selector);
+                ? infos.OrderBy(selector)
+                : infos.OrderByDescending(selector);
             return [.. ordered];
         }
     }

@@ -6,12 +6,9 @@ namespace PixelStatsPlotter.Calc;
 /// <summary> 用于统计像素值的扩展方法 </summary>
 internal static class StatsUtils
 {
-    /// <summary> 获取图像的目标通道 </summary>
-    /// <param name="src"> 源图：任意通道数 </param>
-    /// <param name="tgtCh"> 目标通道枚举 </param>
-    /// <param name="chCnt"> 源图通道数 </param>
+    /// <summary> 获取任意图像的目标通道 </summary>
     /// <returns> 新Mat：仅含目标通道 </returns>
-    /// <remarks> 需预处理非4通道图的A值并保留chCnt以避免重复访问 </remarks>
+    /// <remarks> 需预处理非4通道图的A值并保留chCnt以免重复访问 </remarks>
     public static Mat GetCh(this Mat src, ImgCh tgtCh, int chCnt)
         => (tgtCh, chCnt) switch {
             (ImgCh.R or ImgCh.G or ImgCh.B, 1) => src, // 灰度图的RGB值均为其灰度值

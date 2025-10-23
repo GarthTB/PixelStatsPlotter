@@ -3,22 +3,22 @@ using PixelStatsPlotter.Enums;
 
 namespace PixelStatsPlotter.Calc;
 
-/// <summary> 像素值统计结果缓冲区工厂 </summary>
+/// <summary> 像素值统计缓冲区工厂 </summary>
 internal static class StatsBufFactory
 {
-    /// <summary> 依据通道和统计量，构造统计所需的所有IStatsBuf </summary>
+    /// <summary> 依据统计项目，构造对应的所有统计缓冲区 </summary>
     /// <remarks> 统计量无需预先归并 </remarks>
-    public static IEnumerable<IStatsBuf> CreateFromMetrics(
-        IEnumerable<(ImgCh TgtCh, Stat Stat)> metrics)
-        => (from metric in metrics
-            group metric by metric.TgtCh into g
+    public static IEnumerable<IStatsBuf> CreateFromStats(
+        IEnumerable<(ImgCh TgtCh, Stat Stat)> stats)
+        => (from stat in stats
+            group stat by stat.TgtCh into g
             select (g.Key,
-                    g.Select(static metric => metric.Stat)
-                     .Aggregate(static (a, b) => a | b)))
+                    g.Select(static stats => stats.Stat)
+                     .Aggregate(static (a, b) => a | b))) // 归并
         .Aggregate(
             new List<IStatsBuf>(),
-            static (bufs, statsPerCh) => {
-                var (tgtCh, stats) = statsPerCh;
+            static (bufs, statsByCh) => {
+                var (tgtCh, stats) = statsByCh;
                 if (stats.HasFlag(Stat.MeanStdDev))
                     bufs.Add(new MeanStdDevBuf(tgtCh));
                 else {

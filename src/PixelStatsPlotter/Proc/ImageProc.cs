@@ -5,19 +5,19 @@ namespace PixelStatsPlotter.Proc;
 /// <summary> 图像序列处理器 </summary>
 internal static class ImageProc
 {
-    public static (string Name, double[] Values)[] Run(Config.ProcCfg cfg) {
+    public static Calc.StatResult[] Run(Config.ProcCfg cfg) {
         var (start, count) = cfg.Range;
-        var pathsSpan = start >= 0
+        var files = start >= 0
             && count > 0
-            && start + count <= cfg.Paths.Length
-            ? cfg.Paths.AsSpan(start, count)
-            : cfg.Paths.AsSpan(); // 无效则测量全部
+            && start + count <= cfg.Files.Length
+            ? cfg.Files.AsSpan(start, count)
+            : cfg.Files.AsSpan(); // 无效则统计全部
 
-        int cur = 0, total = pathsSpan.Length;
+        int cur = 0, total = files.Length;
         Console.WriteLine($"处理共 {total} 张图像...");
-        foreach (var path in pathsSpan) {
-            Console.WriteLine($"开始处理第 {++cur}/{total} 张：{path.Name}");
-            using Mat img = new(path.FullName, ImreadModes.Unchanged);
+        foreach (var file in files) {
+            Console.WriteLine($"开始第 {++cur}/{total} 张：{file.Name}");
+            using Mat img = new(file.FullName, ImreadModes.Unchanged);
             using var roi = cfg.GetRoi(img);
             foreach (var buf in cfg.StatsBufs)
                 buf.Collect(roi);

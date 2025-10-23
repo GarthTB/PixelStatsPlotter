@@ -7,7 +7,7 @@ internal static class Plotter
 {
     /// <summary> 由统计结果生成折线图 </summary>
     /// <returns> 配置好的Plot对象，用完需释放 </returns>
-    public static Plot Render((string Name, double[] Values)[] data) {
+    public static Plot Render(Calc.StatResult[] data) {
         if (data.Length == 0
             || data[0].Values.Length == 0)
             throw new ArgumentException(
