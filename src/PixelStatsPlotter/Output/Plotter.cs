@@ -11,7 +11,7 @@ internal static class Plotter
         if (data.Length == 0
             || data[0].Values.Length == 0)
             throw new ArgumentException(
-                "统计结果为空", nameof(data));
+                "统计结果缺失", nameof(data));
 
         Plot plot = new();
         var xs = data[0].Values.Select(static (_, i) => i).ToArray();

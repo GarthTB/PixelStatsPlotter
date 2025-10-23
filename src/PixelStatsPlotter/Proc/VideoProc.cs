@@ -5,8 +5,8 @@ namespace PixelStatsPlotter.Proc;
 /// <summary> 视频处理器 </summary>
 internal static class VideoProc
 {
-    public static Calc.StatResult[] Run(Config.ProcCfg cfg) {
-        var path = cfg.Files[0].FullName; // ProcCfg保证非空
+    public static Calc.StatResult[] Run(Config.CfgModel cfg) {
+        var path = cfg.Files[0].FullName; // CfgModel保证非空
         using VideoCapture capture = new(path);
         if (!capture.IsOpened())
             throw new InvalidOperationException(

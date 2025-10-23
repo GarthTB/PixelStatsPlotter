@@ -5,7 +5,7 @@ namespace PixelStatsPlotter.Proc;
 /// <summary> 图像序列处理器 </summary>
 internal static class ImageProc
 {
-    public static Calc.StatResult[] Run(Config.ProcCfg cfg) {
+    public static Calc.StatResult[] Run(Config.CfgModel cfg) {
         var (start, count) = cfg.Range;
         var files = start >= 0
             && count > 0
