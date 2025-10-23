@@ -4,7 +4,7 @@ using PixelStatsPlotter.Proc;
 
 try {
     Show("Pixel Stats Plotter | 像素统计折线图");
-    Show("v1.0.0 (20251022)");
+    Show("v1.0.1 (20251024)");
     Show("作者: GarthTB | 天卜 <g-art-h@outlook.com>");
     Show("仓库: https://github.com/GarthTB/PixelStatsPlotter");
 
